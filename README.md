@@ -1,70 +1,92 @@
-# HireWise AI — starter project
+# HireWise AI
 
-A beginner-friendly multi-agent job application assistant using Gemini, LangChain, LangGraph, Pydantic, pypdf, and Streamlit.
+HireWise AI is a multi-agent application that helps candidates prepare for job applications and technical interviews.
 
-## Important
-- This is a starter/reference project. Copy the files into your existing project carefully; do not overwrite your `.env`.
-- Your existing environment variable name is `api_key`, so the code reads `api_key` from `.env`.
-- Running the app calls Gemini and uses API quota. Tests do not call Gemini.
-- Never commit `.env` or share your API key.
+## Features
 
-## Expected structure
-```text
-analysis_project/
-├── .env
-├── main.py
-├── app.py
-├── graph.py
-├── agents/
-│   ├── __init__.py
-│   ├── job_analyst.py
-│   ├── resume_evaluator.py
-│   └── interview_coach.py
-├── schemas/
-│   ├── __init__.py
-│   ├── job_schema.py
-│   ├── resume_schema.py
-│   └── interview_schema.py
-├── utils/
-│   ├── __init__.py
-│   └── pdf_reader.py
-└── tests/
-    └── test_pdf_reader.py
+- **Job Analyst:** Extracts job titles, required skills, preferred skills, responsibilities, and qualifications from job descriptions.
+- **Resume Evaluator:** Compares resume content with job requirements, identifies matching and missing skills, and provides improvement suggestions.
+- **Interview Coach:** Generates technical interview questions, resume-based questions, and a personalized study plan.
+- **PDF Resume Upload:** Extracts text from uploaded resumes.
+- **Interactive Interface:** Uses Streamlit to provide a simple user interface.
+
+## Tech Stack
+
+- Python
+- LangGraph
+- LangChain
+- Google Gemini
+- Pydantic
+- Streamlit
+- PyPDF
+
+## Setup
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/injilakhalid/HireWiseAi.git
+cd HireWiseAi
 ```
 
-## Install dependencies (from your project folder)
-```powershell
-uv add langgraph langchain-google-genai langchain-core pydantic python-dotenv streamlit pypdf
+### 2. Install dependencies
+
+Install `uv` if it isn't already available, then run:
+
+```bash
+uv sync
 ```
 
-## Configure `.env`
-Keep your existing `.env` file. It should contain:
-```text
-api_key=YOUR_REAL_GEMINI_API_KEY
+If pytest is not included in your project dependencies, add it with:
+
+```bash
+uv add --dev pytest
 ```
 
-## Run without UI
-```powershell
+### 3. Configure environment variables
+
+Create a `.env` file in the project root:
+
+```env
+api_key=YOUR_GEMINI_API_KEY
+GEMINI_MODEL=gemini-flash-latest
+```
+
+Replace the placeholder with your actual Gemini API key. Never commit your `.env` file to GitHub.
+
+### 4. Run the application
+
+Run the command-line application:
+
+```bash
 uv run main.py
 ```
 
-## Run the web app
-```powershell
+Or launch the Streamlit interface:
+
+```bash
 uv run streamlit run app.py
 ```
 
-## Run offline tests (no Gemini API calls)
-```powershell
-uv run python -m pytest
-```
-If pytest is not installed:
-```powershell
-uv add --dev pytest
+### 5. Run tests
+
+```bash
 uv run python -m pytest
 ```
 
-## Notes
-- `graph.py` uses a simple sequential LangGraph: Job Analyst → Resume Evaluator → Interview Coach.
-- LLM-generated match scores are estimates, not calibrated probabilities.
-- Missing resume evidence means "not shown in this resume", not necessarily that the candidate lacks the skill.
-- For API failures (429, 503, network errors), check Google AI Studio and the official Gemini API quota/status documentation.
+## Architecture
+
+The application uses a LangGraph workflow to coordinate three agents:
+
+1. Job Analyst
+2. Resume Evaluator
+3. Interview Coach
+
+Each agent performs a distinct task and passes structured results to the next stage.
+
+## Future Improvements
+
+- Improve resume parsing and evaluation.
+- Add more detailed interview preparation plans.
+- Expand automated testing.
+- Deploy the Streamlit application.
