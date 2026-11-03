@@ -1,0 +1,16 @@
+              Streamlit UI
+                   |
+            Python Application
+                   |
+             LangGraph
+          (Orchestration)
+                   |
+        ---------------------
+        |         |         |
+      Agent 1   Agent 2   Agent 3
+        |         |         |
+      LangChain + Gemini LLM
+        |         |         |
+      Pydantic Structured Outputs
+                   |
+             Final Results
